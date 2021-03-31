@@ -19,6 +19,8 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
+    region: "ap-northeast-1",
+    stage: "dev",
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
