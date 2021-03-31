@@ -9,9 +9,13 @@ const serverlessConfiguration: AWS = {
     webpack: {
       webpackConfig: './webpack.config.js',
       includeModules: true
+    },
+    output: {
+      // handler: 'scripts/output.handler',
+      file: '.serverless/stack.json'
     }
   },
-  plugins: ['serverless-webpack'],
+  plugins: ['serverless-webpack', 'serverless-stack-output'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
