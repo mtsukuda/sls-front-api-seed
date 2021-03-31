@@ -6,7 +6,8 @@
   "scripts": {
     "deploy": "serverless deploy -v",
     "clean": "serverless remove --aws-profile serverless-deployment",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-local-echo": "yarn sls invoke local -f echo --path src/functions/echo/mock.json"
   },
   "dependencies": {
     "@middy/core": "^1.5.0",
