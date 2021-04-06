@@ -12,6 +12,8 @@ gulp.task('create-functions', function (done){
   if(gulpfs.fileExists(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH) === false) {
     throw new Error(`Could not find ${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.`);
   }
+  let frontApiFunctionConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH));
+  consoe.log(frontApiFunctionConfig);
   done();
 });
 
