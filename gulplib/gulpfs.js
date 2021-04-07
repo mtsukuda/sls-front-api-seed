@@ -76,3 +76,7 @@ module.exports.JSONdata = (filePath, log=true) => {
 module.exports.fileExists = (filePath) => {
   return FS.existsSync(filePath);
 };
+
+module.exports.mkDir = (dirPath) => {
+  return FS.mkdirSync(dirPath);
+};
