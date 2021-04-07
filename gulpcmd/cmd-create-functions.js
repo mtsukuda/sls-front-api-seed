@@ -52,7 +52,8 @@ let _createHandler = function (functionPath) {
   let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
   fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
   if (functionPath.schema) {
-    // import schema from './schema'; --> SCHEMA_IMPORT
+    fileBuffer = _replaceTag('SCHEMA_IMPORT', `import schema from './schema';`, fileBuffer);
+    fileBuffer = _replaceTag('TYPEOF_SCHEMA', `typeof schema`, fileBuffer);
     // typeof schema --> TYPEOF_SCHEMA
   } else {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
@@ -67,11 +68,11 @@ let _createIndex = function (functionPath) {
   fileBuffer = _replaceTag('METHOD', functionPath.method, fileBuffer);
   fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
   if (functionPath.schema) {
-    // import schema from './schema'; --> SCHEMA_IMPORT
-    // 'application/json': schema --> SCHEMA_IMPORT
+    fileBuffer = _replaceTag('SCHEMA_IMPORT', `import schema from './schema';`, fileBuffer);
+    fileBuffer = _replaceTag('SCHEMA', `'application/json': schema`, fileBuffer);
   } else {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
-    fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
+    fileBuffer = _replaceTag('SCHEMA', '', fileBuffer);
   }
   gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${indexFileName}`, fileBuffer);
 };
