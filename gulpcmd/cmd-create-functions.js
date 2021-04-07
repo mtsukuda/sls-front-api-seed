@@ -36,7 +36,9 @@ gulp.task('default',
 let _createFunctionPath = function (frontApiFunctionConfig) {
   console.log(frontApiFunctionConfig);
   frontApiFunctionConfig.functions.forEach((functionPath) => {
+    gulpfs.mkDir(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}`);
     _createHandler(functionPath);
+    _createIndex(functionPath);
   });
 };
 
@@ -44,7 +46,15 @@ let _createHandler = function (functionPath) {
   let handlerFileName = 'handler.ts';
   let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
   fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
-  gulpfs.mkDir(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}`);
+  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
+};
+
+
+let _createIndex = function (functionPath) {
+  let handlerFileName = 'index.ts';
+  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
+  fileBuffer = _replaceTag('METHOD', functionPath.method, fileBuffer);
+  fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
   gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
 };
 
