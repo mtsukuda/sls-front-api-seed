@@ -1,24 +1,24 @@
-import type { AWS } from '@serverless/typescript';
+import type { AWS } from "@serverless/typescript";
 
-import { echo } from './src/functions';
+import { echo } from "./src/functions";
 
 const serverlessConfiguration: AWS = {
-  service: 'sls-front-api-seed',
-  frameworkVersion: '2',
+  service: "sls-front-api-seed",
+  frameworkVersion: "2",
   custom: {
     webpack: {
-      webpackConfig: './webpack.config.js',
-      includeModules: true
+      webpackConfig: "./webpack.config.js",
+      includeModules: true,
     },
     output: {
       // handler: 'scripts/output.handler',
-      file: '.serverless/stack.json'
-    }
+      file: ".serverless/stack.json",
+    },
   },
-  plugins: ['serverless-webpack', 'serverless-stack-output'],
+  plugins: ["serverless-webpack", "serverless-stack-output"],
   provider: {
-    name: 'aws',
-    runtime: 'nodejs12.x',
+    name: "aws",
+    runtime: "nodejs12.x",
     region: "ap-northeast-1",
     stage: "dev",
     apiGateway: {
@@ -26,11 +26,11 @@ const serverlessConfiguration: AWS = {
       shouldStartNameWithService: true,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
     },
-    lambdaHashingVersion: '20201221',
+    lambdaHashingVersion: "20201221",
   },
-  functions: { echo }
-}
+  functions: { echo },
+};
 
 module.exports = serverlessConfiguration;
