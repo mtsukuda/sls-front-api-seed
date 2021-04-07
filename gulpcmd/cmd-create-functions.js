@@ -61,8 +61,8 @@ let _createHandler = function (functionPath) {
 };
 
 let _createIndex = function (functionPath) {
-  let handlerFileName = 'index.ts';
-  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
+  let indexFileName = 'index.ts';
+  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${indexFileName}.tpl`);
   fileBuffer = _replaceTag('METHOD', functionPath.method, fileBuffer);
   fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
   if (functionPath.schema) {
@@ -72,7 +72,7 @@ let _createIndex = function (functionPath) {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
   }
-  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
+  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${indexFileName}`, fileBuffer);
 };
 
 let _createFunctionsIndex = function (frontApiFunctionConfig) {
