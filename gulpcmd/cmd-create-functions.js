@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('../gulplib/gulpfs');
 const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH = '../seed/functions/config.json';
+const FRONT_API_FUNCTIONS_PATH = '../src/functions';
 
 /**
  * Create Functions
@@ -14,6 +15,7 @@ gulp.task('create-functions', function (done){
   }
   let frontApiFunctionConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH));
   console.log(frontApiFunctionConfig);
+  gulpfs.cleanDirectories(FRONT_API_FUNCTIONS_PATH);
   done();
 });
 
