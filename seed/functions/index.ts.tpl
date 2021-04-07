@@ -1,4 +1,4 @@
-import schema from './schema';
+<!--@@SCHEMA_IMPORT-->
 
 export default {
   handler: `${__dirname.split(process.cwd())[1].substring(1)}/handler.main`,
@@ -9,7 +9,7 @@ export default {
         path: '<!--@@PATH-->',
         request: {
           schema: {
-            'application/json': schema
+            <!--@@SCHEMA_IMPORT-->
           }
         }
       }
