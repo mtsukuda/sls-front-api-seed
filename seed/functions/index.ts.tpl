@@ -9,7 +9,7 @@ export default {
         path: '<!--@@PATH-->',
         request: {
           schema: {
-            <!--@@SCHEMA_IMPORT-->
+            <!--@@SCHEMA-->
           }
         }
       }
