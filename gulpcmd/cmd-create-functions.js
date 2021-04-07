@@ -19,6 +19,7 @@ gulp.task('create-functions', function (done){
   console.log(frontApiFunctionConfig);
   gulpfs.cleanDirectories(FRONT_API_FUNCTIONS_PATH);
   _createFunctionPath(frontApiFunctionConfig);
+  _createFunctionsIndex(frontApiFunctionConfig);
   done();
 });
 
@@ -56,7 +57,6 @@ let _createHandler = function (functionPath) {
   gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
 };
 
-
 let _createIndex = function (functionPath) {
   let handlerFileName = 'index.ts';
   let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
@@ -70,6 +70,16 @@ let _createIndex = function (functionPath) {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
   }
   gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
+};
+
+let _createFunctionsIndex = function (frontApiFunctionConfig) {
+  let handlerFileName = 'index.ts';
+  let exportList = [];
+  frontApiFunctionConfig.functions.forEach((functionPath) => {
+    let exportLine = `export { default as ${functionPath.path} } from './${functionPath.path}';`;
+    exportList.push(exportLine);
+  });
+  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${handlerFileName}`, exportList.join());
 };
 
 let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
