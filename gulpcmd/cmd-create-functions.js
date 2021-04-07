@@ -2,6 +2,7 @@ const _ = require('lodash');
 const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('../gulplib/gulpfs');
+const DEBUG = true;
 const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH = '../seed/functions/config.json';
 const FRONT_API_FUNCTIONS_TEMPLATE_PATH = '../seed/functions';
 const FRONT_API_FUNCTIONS_PATH = '../src/functions';
@@ -42,6 +43,13 @@ let _createFunctionPath = function (frontApiFunctionConfig) {
 let _createHandler = function (functionPath) {
   let handlerFileName = 'handler.ts';
   let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
+  fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
   gulpfs.mkDir(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}`);
   gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
+};
+
+let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
+  tagString = new RegExp(startWith + '<!--@@' + tagString + '-->','g');
+  if (DEBUG) console.log('REPLACE: ' + tagString + ' ==> ' + replaceString);
+  return buffer.replace(tagString, replaceString);
 };
