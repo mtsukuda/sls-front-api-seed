@@ -82,7 +82,7 @@ let _createFunctionsIndex = function (frontApiFunctionConfig) {
     let exportLine = `export { default as ${functionPath.path} } from './${functionPath.path}';`;
     exportList.push(exportLine);
   });
-  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionIndexFileName}`, exportList.join());
+  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionIndexFileName}`, exportList.join(''));
 };
 
 let _createServerless = function (frontApiFunctionConfig) {
