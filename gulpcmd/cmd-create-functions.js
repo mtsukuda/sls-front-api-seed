@@ -3,8 +3,10 @@ const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('../gulplib/gulpfs');
 const DEBUG = true;
+const PACKAGE_JSON = 'package.json';
 const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH = '../seed/functions/config.json';
 const FRONT_API_FUNCTIONS_TEMPLATE_PATH = '../seed/functions';
+const FRONT_API_SERVERLESS_TEMPLATE_PATH = '../seed';
 const FRONT_API_FUNCTIONS_PATH = '../src/functions';
 
 /**
@@ -20,6 +22,7 @@ gulp.task('create-functions', function (done){
   gulpfs.cleanDirectories(FRONT_API_FUNCTIONS_PATH);
   _createFunctionPath(frontApiFunctionConfig);
   _createFunctionsIndex(frontApiFunctionConfig);
+  _createServerless(frontApiFunctionConfig);
   done();
 });
 
@@ -80,6 +83,20 @@ let _createFunctionsIndex = function (frontApiFunctionConfig) {
     exportList.push(exportLine);
   });
   gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${handlerFileName}`, exportList.join());
+};
+
+let _createServerless = function (frontApiFunctionConfig) {
+  let serverlessFileName = 'serverless.ts';
+  let moduleList = [];
+  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_SERVERLESS_TEMPLATE_PATH}/${serverlessFileName}.tpl`);
+  frontApiFunctionConfig.functions.forEach((functionPath) => {
+    moduleList.push(functionPath.path);
+  });
+  fileBuffer = _replaceTag('FUNCTIONS', moduleList.join(','), fileBuffer);
+  let slsProjectPackageJSONPath = `../${PACKAGE_JSON}`;
+  let packageJSON = gulpfs.JSONdata(slsProjectPackageJSONPath, false);
+  fileBuffer = _replaceTag('PROJECT_NAME', packageJSON.name, fileBuffer);
+  gulpfs.writeDistFile(`../${serverlessFileName}`, fileBuffer);
 };
 
 let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
