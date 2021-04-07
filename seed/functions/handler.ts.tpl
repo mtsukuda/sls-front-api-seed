@@ -3,12 +3,11 @@ import 'source-map-support/register';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
+<!--@@SCHEMA_IMPORT-->
 
-import schema from './schema';
-
-const <!--@@PATH-->: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+const <!--@@PATH-->: ValidatedEventAPIGatewayProxyEvent<<!--@@TYPEOF_SCHEMA-->> = async (event) => {
   return formatJSONResponse({
-    message: `Hey ${event.body.name}, F**ck you!🖕`,
+    message: `I just want to say, F**ck you!🖕`,
     event,
   });
 }
