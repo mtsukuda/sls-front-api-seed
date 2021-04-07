@@ -76,13 +76,13 @@ let _createIndex = function (functionPath) {
 };
 
 let _createFunctionsIndex = function (frontApiFunctionConfig) {
-  let handlerFileName = 'index.ts';
+  let functionIndexFileName = 'index.ts';
   let exportList = [];
   frontApiFunctionConfig.functions.forEach((functionPath) => {
     let exportLine = `export { default as ${functionPath.path} } from './${functionPath.path}';`;
     exportList.push(exportLine);
   });
-  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${handlerFileName}`, exportList.join());
+  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionIndexFileName}`, exportList.join());
 };
 
 let _createServerless = function (frontApiFunctionConfig) {
