@@ -43,6 +43,7 @@ let _createFunctionPath = function (frontApiFunctionConfig) {
     gulpfs.mkDir(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}`);
     _createHandler(functionPath);
     _createIndex(functionPath);
+    _createSchema(functionPath);
   });
 };
 
@@ -73,6 +74,16 @@ let _createIndex = function (functionPath) {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
   }
   gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${indexFileName}`, fileBuffer);
+};
+
+let _createSchema = function (functionPath) {
+  let shemaFileName = 'schema.ts';
+  if (!functionPath.schema) return;
+  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${shemaFileName}.tpl`);
+  let schemaString = JSON.stringify(functionPath.schema, null, 2);
+  schemaString = schemaString.slice(1).slice(0, -1);
+  fileBuffer = _replaceTag('SCHEMA_SET', schemaString, fileBuffer);
+  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${shemaFileName}`, fileBuffer);
 };
 
 let _createFunctionsIndex = function (frontApiFunctionConfig) {
