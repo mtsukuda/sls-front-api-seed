@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const FS = require('fs');
 
-exports.jsonFilePaths = (dirPath) => {
+module.exports.jsonFilePaths = (dirPath) => {
   let allFiles = FS.readdirSync(dirPath);
   if (allFiles && _.isArray(allFiles)) {
     let jsonFilePathList = allFiles.filter(function (filePath) {
@@ -13,14 +13,14 @@ exports.jsonFilePaths = (dirPath) => {
   return null;
 }
 
-exports.cleanDirectories = (targetPath) => {
-  this.deleteDirectoryRecursive(targetPath);
+module.exports.cleanDirectories = (targetPath) => {
+  module.exports.deleteDirectoryRecursive(targetPath);
   FS.mkdirSync(targetPath, (err) => {
     throw err;
   });
 }
 
-exports.writeDistFile = (distFilePath, buffer) => {
+module.exports.writeDistFile = (distFilePath, buffer) => {
   try {
     FS.writeFileSync(distFilePath, buffer);
     return true;
@@ -29,7 +29,7 @@ exports.writeDistFile = (distFilePath, buffer) => {
   }
 }
 
-exports.appendDistFile = (distFilePath, buffer) => {
+module.exports.appendDistFile = (distFilePath, buffer) => {
   try {
     FS.appendFileSync(distFilePath, buffer);
     return true;
@@ -38,12 +38,12 @@ exports.appendDistFile = (distFilePath, buffer) => {
   }
 }
 
-exports.deleteDirectoryRecursive = (path) => {
+module.exports.deleteDirectoryRecursive = (path) => {
   if(FS.existsSync(path)) {
     FS.readdirSync(path).forEach(function(file) {
       let curPath = path + "/" + file;
       if(FS.lstatSync(curPath).isDirectory()) { // recurse
-        this.deleteDirectoryRecursive(curPath);
+        module.exports.deleteDirectoryRecursive(curPath);
       } else { // delete file
         FS.unlinkSync(curPath);
       }
@@ -52,7 +52,7 @@ exports.deleteDirectoryRecursive = (path) => {
   }
 }
 
-exports.readWholeFile = (targetPath) => {
+module.exports.readWholeFile = (targetPath) => {
   try {
     return FS.readFileSync(targetPath, 'utf8');
   } catch (err) {
@@ -65,14 +65,14 @@ exports.readWholeFile = (targetPath) => {
   }
 }
 
-exports.JSONdata = (filePath, log=true) => {
-  let fileBuffer = this.readWholeFile(filePath);
+module.exports.JSONdata = (filePath, log=true) => {
+  let fileBuffer = module.exports.readWholeFile(filePath);
   if (fileBuffer === null) return '';
   let jsonData = JSON.parse(fileBuffer);
   if (log) console.log(jsonData);
   return jsonData;
 };
 
-exports.fileExists = (filePath) => {
+module.exports.fileExists = (filePath) => {
   return FS.existsSync(filePath);
 };
