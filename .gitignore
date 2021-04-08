@@ -11,3 +11,7 @@ jspm_packages
 .idea
 
 src/functions
+
+seed/functions/config.json
+
+serverless.ts
