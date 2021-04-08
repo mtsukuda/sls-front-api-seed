@@ -9,7 +9,7 @@ const <!--@@PATH-->: ValidatedEventAPIGatewayProxyEvent<<!--@@TYPEOF_SCHEMA-->> 
   return formatJSONResponse({
     message: `I just want to say, F**ck you!🖕`,
     event,
-  });
+  }, {'Access-Control-Allow-Origin': '*'});
 }
 
 export const main = middyfy(<!--@@PATH-->);
