@@ -80,3 +80,7 @@ module.exports.fileExists = (filePath) => {
 module.exports.mkDir = (dirPath) => {
   return FS.mkdirSync(dirPath);
 };
+
+module.exports.copyFile = (filePath, newFilePath) => {
+  FS.copyFileSync(filePath, newFilePath);
+};
