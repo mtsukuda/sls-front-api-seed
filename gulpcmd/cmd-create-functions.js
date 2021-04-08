@@ -15,7 +15,11 @@ const FRONT_API_FUNCTIONS_PATH = '../src/functions';
 gulp.task('create-functions', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' create-functions ') + ' 🚀🚀🚀 ');
   if(gulpfs.fileExists(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH) === false) {
-    throw new Error(`Could not find ${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.`);
+    if(gulpfs.fileExists(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`)) {
+      gulpfs.copyFile(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`, `${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}`);
+    } else {
+      throw new Error(`Could not find ${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.`);
+    }
   }
   let frontApiFunctionConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH));
   console.log(frontApiFunctionConfig);
