@@ -6,10 +6,10 @@ import { middyfy } from '@libs/lambda';
 <!--@@SCHEMA_IMPORT-->
 
 const <!--@@PATH-->: ValidatedEventAPIGatewayProxyEvent<<!--@@TYPEOF_SCHEMA-->> = async (event) => {
-  return formatJSONResponse({
-    message: `I just want to say, F**ck you!🖕`,
-    event,
-  }, {'Access-Control-Allow-Origin': '*'});
+  console.log(event.headers["User-Agent"]);
+  console.log(event.queryStringParameters);
+  console.log(event.multiValueQueryStringParameters);
+  return formatJSONResponse(<!--@@RESPONSE_IMPLEMENT-->, {'Access-Control-Allow-Origin': '*'});
 }
 
 export const main = middyfy(<!--@@PATH-->);
