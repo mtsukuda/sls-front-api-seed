@@ -55,6 +55,11 @@ let _createHandler = function (functionPath) {
   let handlerFileName = 'handler.ts';
   let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
   fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
+  if (functionPath.mock && !functionPath.implement) {
+    fileBuffer = _replaceTag('RESPONSE_IMPLEMENT', JSON.stringify(functionPath.mock), fileBuffer);
+  } else if (!functionPath.mock && !functionPath.implement) {
+    fileBuffer = _replaceTag('RESPONSE_IMPLEMENT', `{message: \`I just want to say, F**ck you!🖕\`}`, fileBuffer);
+  }
   if (functionPath.schema) {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', `import schema from './schema';`, fileBuffer);
     fileBuffer = _replaceTag('TYPEOF_SCHEMA', `typeof schema`, fileBuffer);
