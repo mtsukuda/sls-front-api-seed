@@ -9,6 +9,7 @@ const <!--@@PATH-->: ValidatedEventAPIGatewayProxyEvent<<!--@@TYPEOF_SCHEMA-->> 
   console.log(event.headers["User-Agent"]);
   console.log(event.queryStringParameters);
   console.log(event.multiValueQueryStringParameters);
+  console.log(event.body);
   return formatJSONResponse(<!--@@RESPONSE_IMPLEMENT-->, {'Access-Control-Allow-Origin': '*'});
 }
 
