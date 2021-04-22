@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const gulp = require('gulp');
 const chalk = require('chalk');
-const gulpfs = require('../gulplib/gulpfs');
+const gulpFs = require('../gulplib/gulpfs');
 const DEBUG = true;
 const PACKAGE_JSON = 'package.json';
 const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH = '../seed/functions/config.json';
@@ -14,16 +14,16 @@ const FRONT_API_FUNCTIONS_PATH = '../src/functions';
  */
 gulp.task('create-functions', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' create-functions ') + ' 🚀🚀🚀 ');
-  if(gulpfs.fileExists(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH) === false) {
-    if(gulpfs.fileExists(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`)) {
-      gulpfs.copyFile(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`, `${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}`);
+  if(gulpFs.fileExists(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH) === false) {
+    if(gulpFs.fileExists(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`)) {
+      gulpFs.copyFile(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`, `${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}`);
     } else {
       throw new Error(`Could not find ${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.`);
     }
   }
-  let frontApiFunctionConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH));
+  let frontApiFunctionConfig = JSON.parse(gulpFs.readWholeFile(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH));
   console.log(frontApiFunctionConfig);
-  gulpfs.cleanDirectories(FRONT_API_FUNCTIONS_PATH);
+  gulpFs.cleanDirectories(FRONT_API_FUNCTIONS_PATH);
   _createFunctionPath(frontApiFunctionConfig);
   _createFunctionsIndex(frontApiFunctionConfig);
   _createServerless(frontApiFunctionConfig);
@@ -44,7 +44,7 @@ gulp.task('default',
 let _createFunctionPath = function (frontApiFunctionConfig) {
   console.log(frontApiFunctionConfig);
   frontApiFunctionConfig.functions.forEach((functionPath) => {
-    gulpfs.mkDir(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}`);
+    gulpFs.mkDir(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}`);
     _createHandler(functionPath);
     _createIndex(functionPath);
     _createSchema(functionPath);
@@ -53,7 +53,7 @@ let _createFunctionPath = function (frontApiFunctionConfig) {
 
 let _createHandler = function (functionPath) {
   let handlerFileName = 'handler.ts';
-  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
+  let fileBuffer = gulpFs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${handlerFileName}.tpl`);
   fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
   if (functionPath.mock && !functionPath.implement) {
     fileBuffer = _replaceTag('RESPONSE_IMPLEMENT', JSON.stringify(functionPath.mock), fileBuffer);
@@ -68,12 +68,12 @@ let _createHandler = function (functionPath) {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
     fileBuffer = _replaceTag('TYPEOF_SCHEMA', 'void', fileBuffer);
   }
-  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
+  gulpFs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${handlerFileName}`, fileBuffer);
 };
 
 let _createIndex = function (functionPath) {
   let indexFileName = 'index.ts';
-  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${indexFileName}.tpl`);
+  let fileBuffer = gulpFs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${indexFileName}.tpl`);
   fileBuffer = _replaceTag('METHOD', functionPath.method, fileBuffer);
   fileBuffer = _replaceTag('PATH', functionPath.path, fileBuffer);
   if (functionPath.schema) {
@@ -83,17 +83,17 @@ let _createIndex = function (functionPath) {
     fileBuffer = _replaceTag('SCHEMA_IMPORT', '', fileBuffer);
     fileBuffer = _replaceTag('SCHEMA', '', fileBuffer);
   }
-  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${indexFileName}`, fileBuffer);
+  gulpFs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${indexFileName}`, fileBuffer);
 };
 
 let _createSchema = function (functionPath) {
   let shemaFileName = 'schema.ts';
   if (!functionPath.schema) return;
-  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${shemaFileName}.tpl`);
+  let fileBuffer = gulpFs.readWholeFile(`${FRONT_API_FUNCTIONS_TEMPLATE_PATH}/${shemaFileName}.tpl`);
   let schemaString = JSON.stringify(functionPath.schema, null, 2);
   schemaString = schemaString.slice(1).slice(0, -1);
   fileBuffer = _replaceTag('SCHEMA_SET', schemaString, fileBuffer);
-  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${shemaFileName}`, fileBuffer);
+  gulpFs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionPath.path}/${shemaFileName}`, fileBuffer);
 };
 
 let _createFunctionsIndex = function (frontApiFunctionConfig) {
@@ -103,21 +103,21 @@ let _createFunctionsIndex = function (frontApiFunctionConfig) {
     let exportLine = `export { default as ${functionPath.path} } from './${functionPath.path}';`;
     exportList.push(exportLine);
   });
-  gulpfs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionIndexFileName}`, exportList.join(''));
+  gulpFs.writeDistFile(`${FRONT_API_FUNCTIONS_PATH}/${functionIndexFileName}`, exportList.join(''));
 };
 
 let _createServerless = function (frontApiFunctionConfig) {
   let serverlessFileName = 'serverless.ts';
   let moduleList = [];
-  let fileBuffer = gulpfs.readWholeFile(`${FRONT_API_SERVERLESS_TEMPLATE_PATH}/${serverlessFileName}.tpl`);
+  let fileBuffer = gulpFs.readWholeFile(`${FRONT_API_SERVERLESS_TEMPLATE_PATH}/${serverlessFileName}.tpl`);
   frontApiFunctionConfig.functions.forEach((functionPath) => {
     moduleList.push(functionPath.path);
   });
   fileBuffer = _replaceTag('FUNCTIONS', moduleList.join(','), fileBuffer);
   let slsProjectPackageJSONPath = `../${PACKAGE_JSON}`;
-  let packageJSON = gulpfs.JSONdata(slsProjectPackageJSONPath, false);
+  let packageJSON = gulpFs.JSONdata(slsProjectPackageJSONPath, false);
   fileBuffer = _replaceTag('PROJECT_NAME', packageJSON.name, fileBuffer);
-  gulpfs.writeDistFile(`../${serverlessFileName}`, fileBuffer);
+  gulpFs.writeDistFile(`../${serverlessFileName}`, fileBuffer);
 };
 
 let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
