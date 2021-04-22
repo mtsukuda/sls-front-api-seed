@@ -8,6 +8,7 @@
     "clean": "serverless remove --aws-profile serverless-deployment",
     "create-functions": "gulp -f gulpcmd/cmd-create-functions.js && npm run src-format",
     "src-format": "prettier --write serverless.ts && prettier --write src/functions/**",
+    "gulpcmd-format": "prettier --write gulpcmd/*.js && prettier --write gulplib/*.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test-local-echo": "yarn sls invoke local -f echo --path src/functions/echo/mock.json"
   },
