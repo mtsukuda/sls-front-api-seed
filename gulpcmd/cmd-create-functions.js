@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const gulp = require('gulp');
-const chalk = require('chalk');
 const gulpFs = require('../gulplib/gulpfs');
+const gulpWrite = require("../gulplib/gulpwrite");
 const DEBUG = true;
 const PACKAGE_JSON = 'package.json';
 const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH = '../seed/functions/config.json';
@@ -13,7 +13,7 @@ const FRONT_API_FUNCTIONS_PATH = '../src/functions';
  * Create Functions
  */
 gulp.task('create-functions', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' create-functions ') + ' 🚀🚀🚀 ');
+  gulpWrite.taskName("create-functions");
   if(gulpFs.fileExists(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH) === false) {
     if(gulpFs.fileExists(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`)) {
       gulpFs.copyFile(`${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}.sample`, `${FRONT_API_FUNCTIONS_CONFIG_JSON_PATH}`);
