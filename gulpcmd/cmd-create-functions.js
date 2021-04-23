@@ -4,7 +4,9 @@ const gulpFs = require("../gulplib/gulpfs");
 const gulpWrite = require("../gulplib/gulpwrite");
 const DEBUG = false;
 const PACKAGE_JSON = "package.json";
-const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH = "../seed/functions-config/front-api.json";
+const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH =
+  "../seed/functions-config/front-api.json";
+const API_FUNCTIONS_CONFIG_JSON_PATH = "../seed/functions-config/api.json";
 const FRONT_API_FUNCTIONS_TEMPLATE_PATH = "../seed/functions";
 const FRONT_API_SERVERLESS_TEMPLATE_PATH = "../seed";
 const FRONT_API_FUNCTIONS_PATH = "../src/functions";
@@ -29,6 +31,15 @@ gulp.task("create-functions", function (done) {
   let frontApiFunctionConfig = JSON.parse(
     gulpFs.readWholeFile(FRONT_API_FUNCTIONS_CONFIG_JSON_PATH)
   );
+  if (gulpFs.fileExists(API_FUNCTIONS_CONFIG_JSON_PATH) === true) {
+    let apiFunctionConfig = JSON.parse(
+      gulpFs.readWholeFile(API_FUNCTIONS_CONFIG_JSON_PATH)
+    );
+    frontApiFunctionConfig.functions = _.concat(
+      frontApiFunctionConfig.functions,
+      apiFunctionConfig.functions
+    );
+  }
   console.log(frontApiFunctionConfig);
   gulpFs.cleanDirectories(FRONT_API_FUNCTIONS_PATH);
   _createFunctionPath(frontApiFunctionConfig);
