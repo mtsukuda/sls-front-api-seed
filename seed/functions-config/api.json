@@ -2,7 +2,10 @@
   "functions": [
     {
       "method": "get",
-      "path": "scott"
+      "path": "scott",
+      "mock": {
+        "msg": "Did you say something?🥺️"
+      }
     }
   ]
 }
