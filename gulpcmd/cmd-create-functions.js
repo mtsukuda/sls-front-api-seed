@@ -4,11 +4,12 @@ const gulpFs = require("../gulplib/gulpfs");
 const gulpWrite = require("../gulplib/gulpwrite");
 const DEBUG = false;
 const PACKAGE_JSON = "package.json";
-const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH =
-  "../seed/functions-config/front-api.json";
-const API_FUNCTIONS_CONFIG_JSON_PATH = "../seed/functions-config/api.json";
-const FRONT_API_FUNCTIONS_TEMPLATE_PATH = "../seed/functions";
-const FRONT_API_SERVERLESS_TEMPLATE_PATH = "../seed";
+const SEED_PATH = "../seed";
+const FUNCTIONS_CONFIG_PATH = `${SEED_PATH}/functions-config`;
+const API_FUNCTIONS_CONFIG_JSON_PATH = `${FUNCTIONS_CONFIG_PATH}/api.json`;
+const FRONT_API_FUNCTIONS_CONFIG_JSON_PATH = `${FUNCTIONS_CONFIG_PATH}/front-api.json`;
+const FRONT_API_FUNCTIONS_TEMPLATE_PATH = `${SEED_PATH}/functions`;
+const FRONT_API_SERVERLESS_TEMPLATE_PATH = SEED_PATH;
 const FRONT_API_FUNCTIONS_PATH = "../src/functions";
 
 /**
