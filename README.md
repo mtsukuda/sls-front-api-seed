@@ -1,3 +1,9 @@
+# sls-front-seed
+
+Serverless framework for [ionic-react-seed](https://github.com/mtsukuda/ionic-react-seed) project.
+
+---
+
 # Serverless - AWS Node.js Typescript
 
 This project has been generated using the `aws-nodejs-typescript` template from the [Serverless framework](https://www.serverless.com/).
