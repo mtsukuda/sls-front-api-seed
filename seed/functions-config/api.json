@@ -1,0 +1,8 @@
+{
+  "functions": [
+    {
+      "method": "get",
+      "path": "scott"
+    }
+  ]
+}
